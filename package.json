@@ -4,7 +4,7 @@
   "description": "a login page",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --reporter spec",
     "start": "node server.js"
   },
   "author": "cong",
@@ -12,16 +12,24 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
+    "chai": "^3.5.0",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-jwt": "^5.3.0",
     "express-session": "^1.15.2",
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
+    "mocha": "^3.3.0",
     "mongodb": "^2.2.26",
     "mongoskin": "^2.1.0",
     "q": "^1.5.0",
     "request": "^2.81.0",
     "rootpath": "^0.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.3.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }
