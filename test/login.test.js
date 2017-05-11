@@ -1,9 +1,6 @@
+
 var request = require('request');
-var config = require('../config.json');
 var assert = require('chai').assert;
-var mongo = require('mongoskin');
-var db = mongo.db(config.connectionString, { native_parser: true });
-db.bind('users');
 
 describe('login test', function () {
     it('login successful',function(done){
@@ -11,11 +8,19 @@ describe('login test', function () {
             username: 'user2',
             password: '123'
         };
-        request.post('http://localhost:3000/login', {form: user}, function(err, httpResponse, body){
+        request.post('http://localhost:3000/login', {form: user}, function(err, response, body){
             if(err) throw err;
-            assert.equal(body,'Found. Redirecting to /')
-            done();
+            assert.equal(body,'Found. Redirecting to /');
+            user = {
+                firstName: 'xu',
+                lastName: 'wei',
+                userame: 'user2'
+                //password: '123'
+            };
+            request.post('http://localhost:3000/app/#/account', {form: user}, function(err, response, body){
+                assert.equal()
+            })
+            //done();
         })
     })
 })
-
