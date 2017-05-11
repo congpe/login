@@ -1,1 +1,1 @@
-# add the test folder
+# login to see user's wish list
