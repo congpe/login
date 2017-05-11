@@ -9,8 +9,32 @@ router.post('/register', registerUser);
 router.get('/current', getCurrentUser);
 router.put('/:_id', updateUser);
 router.delete('/:_id', deleteUser);
+router.post('/addwish', addNewWish);
+router.post('/deletewish', deleteOneWish);
 
 module.exports = router;
+
+function deleteOneWish(req, res) {
+
+    userService.deleteWish(req.body._id, req.body.wish)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function addNewWish(req, res) {
+    userService.addWish(req.body._id, req.body.wish)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
 
 function authenticateUser(req, res) {
     userService.authenticate(req.body.username, req.body.password)

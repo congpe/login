@@ -1,4 +1,4 @@
-var config = require('../config.json');
+var config = require('config.json');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -15,7 +15,52 @@ service.create = create;
 service.update = update;
 service.delete = _delete;
 
+service.addWish = addWish;
+service.deleteWish = deleteWish;
+
 module.exports = service;
+
+
+function deleteWish(_id, wish){
+    var deferred = Q.defer();
+
+    db.users.update(
+        { _id: mongo.helper.toObjectID(_id) },
+        { $pull: {wish:wish} },
+        function (err, doc) {
+            if (err) deferred.reject(err);
+
+            deferred.resolve();
+        });
+    return deferred.promise;
+}
+
+function addWish(_id, wish){
+    var deferred = Q.defer();
+
+    db.users.findById(_id, function (err, user){
+        if (err) deferred.reject(err);
+        if (user.wish.indexOf(wish) != -1){
+            deferred.reject('Wish "' + wish + '" already exists');
+        }else{
+            addNewWish();
+        }
+
+    });
+
+    function addNewWish(){
+        db.users.update(
+            { _id: mongo.helper.toObjectID(_id) },
+            { $push: {wish:wish} },
+            function (err, doc) {
+                if (err) deferred.reject(err);
+
+                deferred.resolve();
+            });
+    }
+
+    return deferred.promise;
+}
 
 function authenticate(username, password) {
     var deferred = Q.defer();
@@ -42,7 +87,7 @@ function getById(_id) {
         if (err) deferred.reject(err);
 
         if (user) {
-            // return user
+            // return user (without hashed password)
             deferred.resolve(_.omit(user, 'hash'));
         } else {
             // user not found
@@ -71,7 +116,7 @@ function create(userParam) {
         });
 
     function createUser() {
-
+        // set user object to userParam without the cleartext password
         var user = _.omit(userParam, 'password');
 
         // add hashed password to user object
@@ -105,7 +150,7 @@ function update(_id, userParam) {
 
                     if (user) {
                         // username already exists
-                        deferred.reject('Username "' + req.body.username + '" is already taken')
+                        deferred.reject('Username "' + userParam.username + '" is already taken')
                     } else {
                         updateUser();
                     }
@@ -141,7 +186,7 @@ function update(_id, userParam) {
     return deferred.promise;
 }
 
-
+// prefixed function name with underscore because 'delete' is a reserved word in javascript
 function _delete(_id) {
     var deferred = Q.defer();
 

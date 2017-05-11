@@ -15,7 +15,7 @@
         initController();
 
         function initController() {
-            // get user
+            // get current user
             UserService.GetCurrent().then(function (user) {
                 vm.user = user;
             });
@@ -34,7 +34,7 @@
         function deleteUser() {
             UserService.Delete(vm.user._id)
                 .then(function () {
-                    // log out
+                    // log user out
                     $window.location = '/login';
                 })
                 .catch(function (error) {

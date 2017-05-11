@@ -16,7 +16,18 @@
         service.Update = Update;
         service.Delete = Delete;
 
+        service.AddWish = AddWish;
+        service.DeleteWish = DeleteWish;
+
         return service;
+
+        function DeleteWish(_id, wish) {
+            return $http.post('/api/users/deletewish',{_id: _id, wish: wish}).then(handleSuccess, handleError);
+        }
+
+        function AddWish(_id, wish) {
+            return $http.post('/api/users/addwish',{_id: _id, wish: wish}).then(handleSuccess, handleError);
+        }
 
         function GetCurrent() {
             return $http.get('/api/users/current').then(handleSuccess, handleError);

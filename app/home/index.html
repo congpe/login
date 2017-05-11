@@ -1,1 +1,40 @@
-<h1>Hi {{vm.user.firstName}}!!</h1>
+<div class="container">
+
+    <!-- HEADER AND Item COUNT -->
+    <div class="jumbotron text-center">
+        <h1> {{vm.user.firstName}}'s Wish List <span class="label label-info">{{ vm.user.wish.length }}</span></h1>
+    </div>
+
+
+    <div id="wish-list" class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+
+            <!-- LOOP OVER THE TODOS IN $scope.todos -->
+            <div class="checkbox" ng-repeat="wish in vm.user.wish track by $index">
+                <label>
+                    <input type="checkbox" ng-click="vm.deleteWish(wish)"> {{wish}}
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- CREATE new wish -->
+    <div id="wish-form" class="row">
+        <div class="col-sm-8 col-sm-offset-2 text-center">
+            <form method="post">
+
+                <div class="form-group">
+                    <input type="text" id="wish" class="form-control" placeholder="things I wish to have" ng-model="newwish" />
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" ng-click="vm.addWish(newwish)">Add</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
